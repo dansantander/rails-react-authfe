@@ -24,8 +24,23 @@ export default class Registration extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
+    const { username, email, password, password_confirmation } = this.state
+
     // console.log(this.state)
-    axios.post("http://localhost:3001/registrations")
+    axios.post("http://localhost:3001/registrations", { //axios post takes in 3 parameters: url, things to post, withcredentials:true
+      user: {
+        username,
+        email,
+        password,
+        password_confirmation
+      }
+    },
+      { withCredentials: true } // withCredentials: true tells the API that it is ok to set that cookie in our client. VERY IMPORTANT TO NOT FORGET!!!
+    ).then(response => {
+      console.log("registration response", response);
+    }).catch(error => {
+      console.log("registration error", error)
+    });
   }
 
   render() {
@@ -36,7 +51,7 @@ export default class Registration extends Component {
             type="text"
             name="username"
             placeholder="username"
-            value={this.state.email}
+            value={this.state.username}
             onChange={this.handleChange}
             required
           />
